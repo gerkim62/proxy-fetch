@@ -138,7 +138,7 @@ async function fetchViaProxy(url) {
 }
 
 async function main() {
-  const gameStartUrl = 'https://2048game.com/index.html'
+  const gameStartUrl = 'https://pacman.platzh1rsch.ch/'
   const response = await fetchViaProxy(gameStartUrl)
   const data = await response.text()
   console.log(convertAllUrlsToFolderStructure(data))
