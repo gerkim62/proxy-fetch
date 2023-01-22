@@ -112,7 +112,7 @@ let i = 0
           i++
         });
       }
-      zip.file("index.html", htmlString);
+      zip.file("index.html", convertAllUrlsToFolderStructure(htmlString));
       return zip.generateAsync({ type: "blob" })
     })
     .then(content => {
