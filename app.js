@@ -1,3 +1,33 @@
+function convertUrlToFolder(url) {
+  // Split the URL into its parts
+  let urlParts = url.split("/");
+  let protocol = urlParts[0].replace(':','');
+  let domain = urlParts.slice(2, -1).join("/");
+  let file = urlParts[urlParts.length - 1];
+
+  // Create the folder structure
+  let folderStructure = protocol + "/" + domain + "/" + file;
+
+  return /*"<!--original url: "+ url +"-->\n" +*/ folderStructure;
+}
+
+
+
+function convertAllUrlsToFolderStructure(htmlString) {
+  let newHtmlString = htmlString;
+  let regEx = /(https?):\/\/[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+/gi;
+  let matches = newHtmlString.match(regEx);
+  if(matches){
+    matches.forEach(function(url) {
+      let folderStructure = convertUrlToFolder(url);
+      newHtmlString = newHtmlString.replace(url, folderStructure);
+    });
+  }
+  return newHtmlString;
+}
+
+
+
 function extractLinks(htmlString, baseUrl) {
   const parser = new DOMParser({ baseUrl });
   const doc = parser.parseFromString(htmlString, "text/html");
@@ -70,14 +100,14 @@ console.log(resources)
 
 return  Promise.all(resourcePromises)
     .then(data => {
-
+let i = 0
       for (let key in resources) {
-              let i = 0
-        resources[key].forEach(() => {
-          console.log(key)
-          zip.file(resources[key][i].replace(baseUrl,''),
+              
+        resources[key].forEach((resource) => {
+         // console.log(a, key)
+          zip.file(resource.replace(baseUrl,''),
           data[i]);
-                    console.log(resources[key][i].replace(baseUrl, ''),
+                    console.log(resource.replace(baseUrl, ''),
                       data[i]);
           i++
         });
@@ -108,11 +138,12 @@ async function fetchViaProxy(url) {
 }
 
 async function main() {
-  const gameStartUrl = 'https://cdn.htmlgames.com/JigsawJamWorld/index.html'
+  const gameStartUrl = 'https://cute-timetable.vercel.app/'
   const response = await fetchViaProxy(gameStartUrl)
   const data = await response.text()
+  console.log(convertAllUrlsToFolderStructure(data))
   console.log(await createZip(data,gameStartUrl.replace('index.html', '') ))
-  //console.log(extractLinks(data, gameStartUrl.replace('index.html', '')))
+  console.log(extractLinks(data, gameStartUrl.replace('index.html', '')))
 }
 
 main()
