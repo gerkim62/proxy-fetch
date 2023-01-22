@@ -138,12 +138,12 @@ async function fetchViaProxy(url) {
 }
 
 async function main() {
-  const gameStartUrl = 'https://cute-timetable.vercel.app/'
+  const gameStartUrl = 'https://2048game.com/index.html'
   const response = await fetchViaProxy(gameStartUrl)
   const data = await response.text()
   console.log(convertAllUrlsToFolderStructure(data))
   console.log(await createZip(data,gameStartUrl.replace('index.html', '') ))
-  console.log(extractLinks(data, gameStartUrl.replace('index.html', '')))
+  //console.log(extractLinks(data, gameStartUrl.replace('index.html', '')))
 }
 
 main()
