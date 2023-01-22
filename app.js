@@ -1,7 +1,7 @@
 function convertUrlToFolder(url) {
   // Split the URL into its parts
   let urlParts = url.split("/");
-  let protocol = urlParts[0].replace(':','');
+  let protocol = urlParts[0].replace(':',':');
   let domain = urlParts.slice(2, -1).join("/");
   let file = urlParts[urlParts.length - 1];
 
